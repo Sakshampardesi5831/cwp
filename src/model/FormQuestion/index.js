@@ -16,7 +16,7 @@ const FormQuestion = sequelize.define("FormQuestion", {
     },
     FormID: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Form, // Reference to the Form model
             key: 'FormID'
@@ -24,7 +24,7 @@ const FormQuestion = sequelize.define("FormQuestion", {
     },
     QuestionID: {
         type: DataTypes.UUID,
-        allowNull: false,
+        allowNull: true,
         references: {
             model: Question, // Reference to the Question model
             key: 'QuestionID'
@@ -46,10 +46,10 @@ const FormQuestion = sequelize.define("FormQuestion", {
     },
     ShiftID: {
         type: DataTypes.UUID,
-        references: {
-            model: Shift, 
-            key: 'ShiftID'
-        }
+        // references: {
+        //     model: Shift, 
+        //     key: 'ShiftID'
+        // }
     }
 }, {
     timestamps: false 

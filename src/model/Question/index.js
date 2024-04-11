@@ -10,13 +10,16 @@ const Question = sequelize.define("Question", {
         primaryKey: true
     },
     QuestionText: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     },
     QuestionType: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     },
     Description: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     }
 }, {
     timestamps: false // To disable Sequelize's default timestamps

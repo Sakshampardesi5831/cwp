@@ -7,11 +7,10 @@ const sequelize = new Sequelize(
   process.env.MYSQL_PASSWORD,
   {
     host: process.env.MYSQL_HOST,
-    dialect: "mssql",
-    synchronize: true,
-    dialectOptions: {
-      encrypt: true
-    }
+    dialect: "mysql",
+    // dialectOptions: {
+    //   encrypt: true
+    // }
   },
   
 );
@@ -24,3 +23,14 @@ sequelize
     console.error("Unable to connect to the database: ", error);
   });
 export default sequelize;
+
+
+
+
+
+
+
+
+
+
+

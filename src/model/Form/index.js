@@ -10,13 +10,15 @@ const Form = sequelize.define("Form", {
         primaryKey: true
     },
     FormName: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     },
     Description: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     }
 }, {
-    timestamps: false // To disable Sequelize's default timestamps
+    timestamps: false 
 });
 
 sequelize.sync().then(() => {

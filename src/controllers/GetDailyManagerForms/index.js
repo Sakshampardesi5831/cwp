@@ -4,8 +4,11 @@ import {
   badRequest,
 } from "../../helpers/api-response";
 import db from "../../config/db";
+import Plant from "../../model/Plant";
 export const getDailyManagerForms = async (request, response, next) => {
-  const { areaId, lineId, plantId } = request.query;
+  const { plant, shift, areas, lines, equipments, date } = request.query;
+  const project = await Plant.findOne({ where: { PlantName: plant } });
+  console.log(project.PlantID);
   try {
     const sql = `
     SELECT DISTINCT 
@@ -24,11 +27,11 @@ export const getDailyManagerForms = async (request, response, next) => {
     INNER JOIN 
         Areas A ON p.PlantID = A.PlantID 
     INNER JOIN 
-        \`Lines\` L ON L.AreaID IN ('cfd776b2-9d0d-476e-9426-3d61f210d7b2') 
+        \`Lines\` L ON L.AreaID IN (${areas.map((id) => `'${id}'`).join(",")}) 
     INNER JOIN 
-        Equipment E ON E.LineID IN ('46efc7b0-1ac5-4e96-8d02-b6fb7981ace6') 
+        Equipment E ON E.LineID IN (${lines.map((id) => `'${id}'`).join(",")}) 
     WHERE 
-        p.PlantID ='74833a16-afd2-4d67-a7ab-e0541abdbec8';
+        p.PlantID ='${project.PlantID}';
 `;
     const processors = await db.query(sql, { type: db.QueryTypes.SELECT });
     return success(request, response, processors);

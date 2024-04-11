@@ -13,19 +13,19 @@ const FormSubmissionData = sequelize.define("FormSubmissionData", {
     },
     SubmissionID: {
         type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: FormSubmission, // Reference to the FormSubmission model
-            key: 'SubmissionID'
-        }
+        allowNull: true,
+        // references: {
+        //     model: FormSubmission, // Reference to the FormSubmission model
+        //     key: 'SubmissionID'
+        // }
     },
     FormQuestionID: {
         type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: FormQuestion, // Reference to the FormQuestion model
-            key: 'FormQuestionID'
-        }
+        allowNull: true,
+        // references: {
+        //     model: FormQuestion, // Reference to the FormQuestion model
+        //     key: 'FormQuestionID'
+        // }
     },
     Answer: {
         type: DataTypes.STRING(200)

@@ -15,11 +15,11 @@ const Equipment = sequelize.define("Equipment", {
     },
     LineID: {
         type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: Line, // Reference to the Line model
-            key: 'LineID'
-        }
+        allowNull: true,
+        // references: {
+        //     model: Line, // Reference to the Line model
+        //     key: 'LineID'
+        // }
     },
     Description: {
         type: DataTypes.STRING(200)

@@ -1,56 +1,56 @@
 import pkg from "sequelize";
 const { Sequelize, DataTypes } = pkg;
 import sequelize from "../../config/db";
-import Plant from "../Plant";
-const Role = sequelize.define(
-  "Role",
+
+const DmsFormSubmit = sequelize.define(
+  "Dms_Form_Submit",
   {
-    RoleID: {
+    Dms_Form_id: {
       type: DataTypes.UUID,
-      defaultValue: Sequelize.UUIDV4,
       allowNull: false,
       primaryKey: true,
-      unique: true, // Set as unique
     },
-    RoleName: {
+    Form: {
       type: DataTypes.STRING(200),
       allowNull: true,
     },
-    RoleDesc: {
+    Shift: {
       type: DataTypes.STRING(200),
       allowNull: true,
     },
-    Status: {
+    Line: {
       type: DataTypes.STRING(200),
       allowNull: true,
     },
-    PlantID: {
-      type: DataTypes.UUID,
-      allowNull: true,
-    },
-    CreationDate: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    CreatedBy: {
+    Equipment: {
       type: DataTypes.STRING(200),
+      allowNull: true,
+    },
+    Answers: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+    },
+    submittedBy: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+    },
+    Plant: {
+      type: DataTypes.STRING(500),
       allowNull: true,
     },
   },
   {
-    timestamps: false, // To disable Sequelize's default timestamps
+    timestamps: false,
   }
 );
-
-Role.belongsTo(Plant, { foreignKey: "PlantID" }); // Assuming you have a Plant model
 
 sequelize
   .sync()
   .then(() => {
-    console.log("Role -> table created successfully!");
+    console.log("DMS FORM SUBMIT  -> table created successfully!");
   })
   .catch((error) => {
     console.error("Unable to create table : ", error);
   });
 
-export default Role;
+export default DmsFormSubmit;

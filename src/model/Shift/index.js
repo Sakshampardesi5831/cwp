@@ -10,16 +10,20 @@ const Shift = sequelize.define("Shift", {
         primaryKey: true
     },
     ShiftName: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     },
     Description: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     },
     StartTime: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: true,
     },
     EndTime: {
-        type: DataTypes.DATE
+        type: DataTypes.DATE,
+        allowNull: true,
     }
 }, {
     timestamps: false // To disable Sequelize's default timestamps

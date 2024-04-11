@@ -2,6 +2,7 @@ import pkg from 'sequelize';
 const { Sequelize, DataTypes } = pkg;
 import sequelize from '../../config/db';
 import Plant from '../Plant'; // Import the Plant model if not already imported
+import { FORCE } from 'sequelize/lib/index-hints';
 
 const Area = sequelize.define("Area", {
     AreaID: {
@@ -11,18 +12,20 @@ const Area = sequelize.define("Area", {
         primaryKey: true
     },
     AreaName: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     },
     PlantID: {
         type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: Plant, // Reference to the Plant model
-            key: 'PlantID'
-        }
+        allowNull: true,
+        // references: {
+        //     model: Plant, // Reference to the Plant model
+        //     key: 'PlantID'
+        // }
     },
     Description: {
-        type: DataTypes.STRING(200)
+        type: DataTypes.STRING(200),
+        allowNull: true,
     }
 }, {
     timestamps: false // To disable Sequelize's default timestamps

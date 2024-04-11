@@ -13,23 +13,23 @@ const FormDefectData = sequelize.define("FormDefectData", {
     },
     SubmissionID: {
         type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: FormSubmission, // Reference to the FormSubmission model
-            key: 'SubmissionID'
-        }
+        allowNull: true,
+        // references: {
+        //     model: FormSubmission, // Reference to the FormSubmission model
+        //     key: 'SubmissionID'
+        // }
     },
     FormDefectID: {
         type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: FormDefect, // Reference to the FormDefect model
-            key: 'FormDefectID'
-        }
+        allowNull: true,
+        // references: {
+        //     model: FormDefect, // Reference to the FormDefect model
+        //     key: 'FormDefectID'
+        // }
     },
     isDefective: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
     }
 }, {
     timestamps: false // To disable Sequelize's default timestamps

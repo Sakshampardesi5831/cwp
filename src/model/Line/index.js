@@ -14,11 +14,11 @@ const Line = sequelize.define(
     },
     AreaID: {
       type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: Area, // Reference to the Area model
-        key: "AreaID",
-      },
+      allowNull: true,
+      // references: {
+      //   model: Area, // Reference to the Area model
+      //   key: "AreaID",
+      // },
     },
     LineName: {
       type: DataTypes.STRING(50),
