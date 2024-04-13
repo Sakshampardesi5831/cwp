@@ -22,6 +22,7 @@ export async function saveFormDefects(request, response, next) {
     const uploadImages = await Images.create({
       Images: JSON.stringify(images),
     });
+    const creationDate = new Date("2025-05-24");
     const formDefect = await FormDefect.create({
       DMS_FORM_ID: dms_form_id,
       FormID: form_id,
@@ -38,5 +39,3 @@ export async function saveFormDefects(request, response, next) {
     return internalServerError(request, response, error.message);
   }
 }
-
-

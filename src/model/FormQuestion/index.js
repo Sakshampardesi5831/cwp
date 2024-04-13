@@ -55,10 +55,11 @@ const FormQuestion = sequelize.define("FormQuestion", {
     timestamps: false 
 });
 
-sequelize.sync().then(() => {
-    console.log('FormQuestion -> table created successfully!');
-}).catch((error) => {
-    console.error('Unable to create table : ', error);
-});
-
+if(process.env.SYNC_SEQ){
+    sequelize.sync().then(() => {
+        console.log('Area -> table created successfully!');
+    }).catch((error) => {
+        console.error('Unable to create table : ', error);
+    });
+}
 export default FormQuestion;

@@ -34,10 +34,12 @@ const FormSubmissionData = sequelize.define("FormSubmissionData", {
     timestamps: false // To disable Sequelize's default timestamps
 });
 
-sequelize.sync().then(() => {
-    console.log('FormSubmissionData -> table created successfully!');
-}).catch((error) => {
-    console.error('Unable to create table : ', error);
-});
+if(process.env.SYNC_SEQ){
+    sequelize.sync().then(() => {
+        console.log('Area -> table created successfully!');
+    }).catch((error) => {
+        console.error('Unable to create table : ', error);
+    });
+}
 
 export default FormSubmissionData;

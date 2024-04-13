@@ -103,13 +103,12 @@ const FormDefect = sequelize.define(
   }
 );
 
-sequelize
-  .sync()
-  .then(() => {
-    console.log("FormDefect -> table created successfully!");
-  })
-  .catch((error) => {
-    console.error("Unable to create table : ", error);
+if(process.env.SYNC_SEQ){
+  sequelize.sync().then(() => {
+      console.log('Area -> table created successfully!');
+  }).catch((error) => {
+      console.error('Unable to create table : ', error);
   });
+}
 
 export default FormDefect;

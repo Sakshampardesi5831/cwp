@@ -44,13 +44,11 @@ const DmsFormSubmit = sequelize.define(
   }
 );
 
-sequelize
-  .sync()
-  .then(() => {
-    console.log("DMS FORM SUBMIT  -> table created successfully!");
-  })
-  .catch((error) => {
-    console.error("Unable to create table : ", error);
+if(process.env.SYNC_SEQ){
+  sequelize.sync().then(() => {
+      console.log('Area -> table created successfully!');
+  }).catch((error) => {
+      console.error('Unable to create table : ', error);
   });
-
+}
 export default DmsFormSubmit;

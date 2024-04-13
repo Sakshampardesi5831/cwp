@@ -22,13 +22,12 @@ const Users = sequelize.define("Users", {
     allowNull: true,
   },
 });
-sequelize
-  .sync()
-  .then(() => {
-    console.log("Users -> table created successfully!");
-  })
-  .catch((error) => {
-    console.error("Unable to create table : ", error);
+if(process.env.SYNC_SEQ){
+  sequelize.sync().then(() => {
+      console.log('Area -> table created successfully!');
+  }).catch((error) => {
+      console.error('Unable to create table : ', error);
   });
+}
 
 export default Users;

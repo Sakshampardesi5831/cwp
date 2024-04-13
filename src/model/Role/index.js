@@ -44,13 +44,12 @@ const Role = sequelize.define(
 
 Role.belongsTo(Plant, { foreignKey: "PlantID" }); // Assuming you have a Plant model
 
-sequelize
-  .sync()
-  .then(() => {
-    console.log("Role -> table created successfully!");
-  })
-  .catch((error) => {
-    console.error("Unable to create table : ", error);
+if(process.env.SYNC_SEQ){
+  sequelize.sync().then(() => {
+      console.log('Area -> table created successfully!');
+  }).catch((error) => {
+      console.error('Unable to create table : ', error);
   });
+}
 
 export default Role;

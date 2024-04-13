@@ -22,10 +22,11 @@ const FormDefectsImages = sequelize.define('Form_Defects_Images', {
         allowNull: true,
     }
 });
-sequelize.sync().then(() => {
-    console.log('Images -> table created successfully!');
-}).catch((error) => {
-    console.error('Unable to create table : ', error);
-});
-
+if(process.env.SYNC_SEQ){
+    sequelize.sync().then(() => {
+        console.log('Area -> table created successfully!');
+    }).catch((error) => {
+        console.error('Unable to create table : ', error);
+    });
+}
 export default FormDefectsImages;

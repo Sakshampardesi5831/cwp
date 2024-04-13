@@ -1,6 +1,10 @@
 import { badRequest, internalServerError, success } from "../../helpers";
 import db from "../../config/db";
 import Plant from "../../model/Plant";
+import Area from "../../model/Area";
+import { HasMany } from "sequelize";
+import Equipment from "../../model/Equipment";
+import Line from "../../model/Line";
 export const SaveUser = (request, response, next) => {
   try {
     return success(
@@ -21,66 +25,81 @@ export const SaveUser = (request, response, next) => {
 export const getProcessors = async (request, response, next) => {
   const { plantName, role } = request.query;
   try {
-    const project = await Plant.findOne({ where: { PlantName: plantName } });
-    console.log(project.PlantID);
-    const sql = `
-    SELECT DISTINCT 
-        A.AreaID, A.AreaName, A.Description AS AreaDescription,
-        L.LineID, L.LineName, L.Description AS LineDescription,
-        E.EquipmentID, E.EquipmentName, E.Description AS EquipmentDescription
-    FROM  
-        Plants P
-    INNER JOIN 
-        Areas A ON P.PlantID = A.PlantID
-    INNER JOIN 
-        \`Lines\` L ON L.AreaID = A.AreaID
-    INNER JOIN 
-        Equipment E ON E.LineID = L.LineID
-    WHERE 
-        P.PlantID = '${project.PlantID}'
-    `;
-    const processors = await db.query(sql, { type: db.QueryTypes.SELECT });
-    const areas = [];
-    const productionLines = [];
-    const equipment = [];
-    processors.forEach((item) => {
-      const areaExists = areas.some((area) => area.AreaID === item.AreaID);
-      if (!areaExists) {
-        areas.push({
-          AreaID: item.AreaID,
-          AreaName: item.AreaName,
-          AreaDescription: item.AreaDescription,
-        });
-      }
-      const lineExists = productionLines.some(
-        (line) => line.LineID === item.LineID
-      );
-      if (!lineExists) {
-        productionLines.push({
-          LineID: item.LineID,
-          LineName: item.LineName,
-          LineDescription: item.LineDescription,
-          AreaID: item.AreaID,
-        });
-      }
-      equipment.push({
-        EquipmentID: item.EquipmentID,
-        EquipmentName: item.EquipmentName,
-        EquipmentDescription: item.EquipmentDescription,
-        LineID: item.LineID,
-      });
+    const result = await Plant.findAll({
+      include: [
+        {
+          model: Area,
+          as: "Plant",
+          association: new HasMany(Plant, Area, {
+            targetKey: "PlantID",
+            foreignKey: "PlantID",
+            constraints: false,
+          }),
+          required: true,
+          include: {
+            model: Line,
+            as: "Line",
+            association: new HasMany(Area, Line, {
+              targetKey: "AreaId",
+              foreignKey: "AreaID",
+              constraints: false,
+            }),
+            required: true,
+            include: {
+              model: Equipment,
+              as: "Equipment",
+              association: new HasMany(Line, Equipment, {
+                targetKey: "LineID",
+                foreignKey: "LineID",
+                constraints: false,
+              }),
+              required: true,
+            },
+          },
+        },
+      ],
+      where: {
+        PlantName: plantName,
+      },
     });
-    const finalArray = {
-      processing_areas: areas,
-      production_lines: productionLines,
-      equipment: equipment,
-    };
-    return success(
-      request,
-      response,
-      finalArray,
-      "Processors Fetched Successfully"
-    );
+    let processingAreas = [];
+    let processingLines = [];
+    let processingEquipments = [];
+
+    for (let i = 0; i < result.length; i++) {
+      const row = result[i];
+      const areas = row.Areas;
+
+      areas.forEach((area) => {
+        processingAreas.push({
+          AreaID: area.AreaID,
+          AreaName: area.AreaName,
+          Description: area.Description,
+        });
+
+        area.Lines.forEach((line) => {
+          processingLines.push({
+            LineID: line.LineID,
+            LineName: line.LineName,
+            AreaID: line.AreaID,
+            Description: line.Description,
+          });
+          line.Equipment.forEach((equipment) => {
+            processingEquipments.push({
+              EquimentId: equipment.EquipmentID,
+              EquipmentName: equipment.EquipmentName,
+              Description: equipment.Description,
+              LineID: equipment.LineID,
+            });
+          });
+        });
+      });
+    }
+    return success(request, response, {
+      processing_areas: processingAreas,
+      production_lines: processingLines,
+      equipments: processingEquipments,
+    });
   } catch (error) {
     return internalServerError(
       request,

@@ -4,7 +4,7 @@ import {
   badRequest,
 } from "../../helpers/api-response";
 import DmsFormSubmit from "../../model/DMS-Form-Submit";
-
+import Questions from "../../model/Question";
 export async function createDmsFormSubmit(request, response) {
   try {
     const {
@@ -41,8 +41,6 @@ export async function createDmsFormSubmit(request, response) {
 export async function getDmsFormSubmit(request, response) {
   const { formId } = request.params;
   const { plant, shift, lines, frequency, equipments } = request.query;
-  console.log(request.query);
-  console.log(request.params);
   try {
     const productionLines = await DmsFormSubmit.findAll({
       where: {
@@ -52,23 +50,16 @@ export async function getDmsFormSubmit(request, response) {
         equipment: equipments,
       },
     });
-    const transformedData = {
-      plant,
-      form: "5S", // Assuming form is always "5S" for this transformation
-      shift,
-      lines: productionLines.map((line) => ({
-        name: line.line,
-        equipments: [
-          {
-            name: line.equipment,
-            questions: JSON.parse(line.Answers).map((answer) => ({
-              id: answer.question_id,
-              answer: answer.answer,
-            })),
-          },
-        ],
-      })),
-    };
+    const transformedData = productionLines.map((item) => ({
+      Dms_Form_id: item.Dms_Form_id.trim(),
+      Form: item.Form,
+      Shift: item.Shift,
+      Line: item.Line,
+      Equipment: item.Equipment,
+      Answers: JSON.parse(item.Answers),
+      submittedBy: item.submittedBy,
+      Plant: item.Plant
+    }));
     return success(request, response, transformedData);
   } catch (error) {
     return internalServerError(
@@ -79,3 +70,4 @@ export async function getDmsFormSubmit(request, response) {
     );
   }
 }
+

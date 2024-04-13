@@ -10,7 +10,8 @@ import { formDefectRouter } from "./FormDefect";
 import { dmsFormSubmitRoute } from "./DMS-FORM-SUBMIT";
 import { questionsRouter } from "./Questions";
 import { formRouter } from "./Form";
-
+import { createFormEquipmentRoute } from "./Form_Equipment";
+import { saveShiftRoutes } from "./Shift";
 export const wrapRoutes = (app) => {
   healthRouter(app);
   usersRouter(app);
@@ -24,4 +25,6 @@ export const wrapRoutes = (app) => {
   dmsFormSubmitRoute(app);
   questionsRouter(app);
   formRouter(app);
+  createFormEquipmentRoute(app);
+  saveShiftRoutes(app);
 };
