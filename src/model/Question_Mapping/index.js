@@ -35,6 +35,10 @@ const QuestionMapping = sequelize.define(
       type: DataTypes.UUID,
       allowNull: true,
     },
+    QuestionId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+    },
   },
   {
     timestamps: false,

@@ -13,10 +13,22 @@ import Plants from "../../model/Plant";
 import FormEqiupment from "../../model/Form_Equipment";
 import { HasMany, HasOne, Sequelize } from "sequelize";
 export const getDailyManagerForms = async (request, response, next) => {
-  const { plant, shift, areas, lines, equipments } = request.query;
+  const { plant, shift, areas, lines, equipments } = request.body;
+  console.log({ plant, shift, areas, lines, equipments });
+  // const paramsLines = lines
   try {
     const result = await FormEqiupment.findAll({
       include: [
+        {
+          model: Area,
+          as: "Area",
+          association: new HasOne(FormEqiupment, Area, {
+            sourceKey: "AreaId",
+            foreignKey: "AreaID",
+            constraints: false,
+          }),
+          required: true,
+        },
         {
           model: Form,
           as: "Form",
@@ -30,7 +42,7 @@ export const getDailyManagerForms = async (request, response, next) => {
         {
           model: Line,
           as: "Line",
-          association: new HasMany(FormEqiupment, Line, {
+          association: new HasOne(FormEqiupment, Line, {
             sourceKey: "LineId",
             foreignKey: "LineID",
             constraints: false,
@@ -40,7 +52,7 @@ export const getDailyManagerForms = async (request, response, next) => {
         {
           model: Equipment,
           as: "Equipment",
-          association: new HasMany(FormEqiupment, Equipment, {
+          association: new HasOne(FormEqiupment, Equipment, {
             sourceKey: "EquipmentId",
             foreignKey: "EquipmentID",
             constraints: false,
@@ -58,7 +70,30 @@ export const getDailyManagerForms = async (request, response, next) => {
       },
     });
 
-    return success(request, response, result);
+    const transformedData = {};
+
+    result.forEach((item) => {
+      if (!transformedData[item.FormId]) {
+        transformedData[item.FormId] = {
+          id: item.FormId,
+          name: item.Form.FormName,
+          description: item.Form.Description,
+          // date: new Date().toISOString().split('T')[0],
+          plant: "Garland",
+          shift: "Shift 1",
+          areas: [],
+          lines: [],
+          equipments: [],
+        };
+      }
+
+      transformedData[item.FormId].areas.push(item.Area);
+      transformedData[item.FormId].lines.push(item.Line);
+      transformedData[item.FormId].equipments.push(item.Equipment);
+    });
+    const transformedArray = Object.values(transformedData);
+
+    return success(request, response, transformedArray);
   } catch (error) {
     return internalServerError(
       request,

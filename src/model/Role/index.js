@@ -28,10 +28,6 @@ const Role = sequelize.define(
       type: DataTypes.UUID,
       allowNull: true,
     },
-    CreationDate: {
-      type: 'DATETIME',
-      allowNull: true,
-    },
     CreatedBy: {
       type: DataTypes.STRING(200),
       allowNull: true,

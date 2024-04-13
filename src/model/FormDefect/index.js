@@ -83,9 +83,6 @@ const FormDefect = sequelize.define(
     Comment: {
       type: DataTypes.STRING(255),
     },
-    CreationDate: {
-      type: "DATETIME",
-    },
     AssignmentDate: {
       type: "DATETIME",
     },

@@ -24,9 +24,7 @@ const Equipment = sequelize.define("Equipment", {
     Description: {
         type: DataTypes.STRING(200)
     },
-    CreationDate: {
-        type:'DATETIME'
-    }
+
 }, {
     timestamps: false // To disable Sequelize's default timestamps
 });
