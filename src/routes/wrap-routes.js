@@ -12,6 +12,7 @@ import { questionsRouter } from "./Questions";
 import { formRouter } from "./Form";
 import { createFormEquipmentRoute } from "./Form_Equipment";
 import { saveShiftRoutes } from "./Shift";
+import { dmsForms } from "./Dms_Forms";
 export const wrapRoutes = (app) => {
   healthRouter(app);
   usersRouter(app);
@@ -27,4 +28,5 @@ export const wrapRoutes = (app) => {
   formRouter(app);
   createFormEquipmentRoute(app);
   saveShiftRoutes(app);
+  dmsForms(app)
 };

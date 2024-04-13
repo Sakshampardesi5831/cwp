@@ -2,8 +2,8 @@ import pkg from "sequelize";
 const { Sequelize, DataTypes } = pkg;
 import sequelize from "../../config/db";
 
-const FormEqiupment = sequelize.define(
-  "Form_Equipment",
+const QuestionMapping = sequelize.define(
+  "Question_Mapping",
   {
     id: {
       type: DataTypes.UUID,
@@ -27,11 +27,11 @@ const FormEqiupment = sequelize.define(
       type: DataTypes.UUID,
       allowNull: true,
     },
-    AreaId: {
+    PlantId: {
       type: DataTypes.UUID,
       allowNull: true,
     },
-    PlantId: {
+    FrequencyId: {
       type: DataTypes.UUID,
       allowNull: true,
     },
@@ -40,15 +40,15 @@ const FormEqiupment = sequelize.define(
     timestamps: false,
   }
 );
-if (process.env.SYNC_SEQ ) {
+if (process.env.SYNC_SEQ) {
   sequelize
     .sync()
     .then(() => {
-      console.log("Form Equipment -> table created successfully!");
+      console.log("Question Mapping -> table created successfully!");
     })
     .catch((error) => {
       console.error("Unable to create table : ", error);
     });
 }
 
-export default FormEqiupment;
+export default QuestionMapping;
