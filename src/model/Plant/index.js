@@ -35,7 +35,7 @@ const Plant = sequelize.define(
 );
 if(process.env.SYNC_SEQ){
   sequelize.sync().then(() => {
-      console.log('Area -> table created successfully!');
+      console.log('Plant -> table created successfully!');
   }).catch((error) => {
       console.error('Unable to create table : ', error);
   });
