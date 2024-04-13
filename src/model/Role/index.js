@@ -29,7 +29,7 @@ const Role = sequelize.define(
       allowNull: true,
     },
     CreationDate: {
-      type: DataTypes.DATE,
+      type: 'DATETIME',
       allowNull: true,
     },
     CreatedBy: {
@@ -42,14 +42,14 @@ const Role = sequelize.define(
   }
 );
 
-Role.belongsTo(Plant, { foreignKey: "PlantID" }); // Assuming you have a Plant model
+//Role.belongsTo(Plant, { foreignKey: "PlantID" }); // Assuming you have a Plant model
 
-if(process.env.SYNC_SEQ){
+// if(process.env.SYNC_SEQ){
   sequelize.sync().then(() => {
-      console.log('Area -> table created successfully!');
+      console.log('Role -> table created successfully!');
   }).catch((error) => {
       console.error('Unable to create table : ', error);
   });
-}
+// }
 
 export default Role;

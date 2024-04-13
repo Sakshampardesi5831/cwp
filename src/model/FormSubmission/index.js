@@ -17,26 +17,26 @@ const FormSubmission = sequelize.define(
     FormID: {
       type: DataTypes.UUID,
       allowNull: true,
-      references: {
-        model: Form, // Reference to the Form model
-        key: "FormID",
-      },
+      // references: {
+      //   model: Form,
+      //   key: "FormID",
+      // },
     },
     LineID: {
       type: DataTypes.UUID,
       allowNull: true,
-      references: {
-        model: Line, // Reference to the Line model
-        key: "LineID",
-      },
+      // references: {
+      //   model: Line, 
+      //   key: "LineID",
+      // },
     },
     EquipmentID: {
       type: DataTypes.UUID,
       allowNull: true,
-      references: {
-        model: Equipment, // Reference to the Equipment model
-        key: "EquipmentID",
-      },
+      // references: {
+      //   model: Equipment,
+      //   key: "EquipmentID",
+      // },
     },
     ShiftID: {
       type: DataTypes.UUID,
@@ -47,7 +47,7 @@ const FormSubmission = sequelize.define(
       // },
     },
     SubmissionDate: {
-      type: DataTypes.DATE,
+      type: 'DATETIME',
     },
     SubmissionBy: {
       type: DataTypes.STRING(200),

@@ -24,7 +24,7 @@ const FormDefectsImages = sequelize.define('Form_Defects_Images', {
 });
 if(process.env.SYNC_SEQ){
     sequelize.sync().then(() => {
-        console.log('Area -> table created successfully!');
+        console.log('Images -> table created successfully!');
     }).catch((error) => {
         console.error('Unable to create table : ', error);
     });
