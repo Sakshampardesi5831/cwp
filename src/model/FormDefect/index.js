@@ -84,30 +84,33 @@ const FormDefect = sequelize.define(
       type: DataTypes.STRING(255),
     },
     CreationDate: {
-      type: DataTypes.DATE,
+      type: "DATETIME",
     },
     AssignmentDate: {
-      type: DataTypes.DATE,
+      type: "DATETIME",
     },
     ImagesId: {
       type: DataTypes.UUID,
       allowNull: true,
       references: {
-        model: Images, // Reference to the User model for AssignedToUserID
+        model: Images,
         key: "ImageId",
       },
     },
   },
   {
-    timestamps: false, // To disable Sequelize's default timestamps
+    timestamps: false,
   }
 );
 
 if(process.env.SYNC_SEQ){
-  sequelize.sync().then(() => {
-      console.log('Area -> table created successfully!');
-  }).catch((error) => {
-      console.error('Unable to create table : ', error);
+sequelize
+  .sync()
+  .then(() => {
+    console.log("FormDefect -> table created successfully!");
+  })
+  .catch((error) => {
+    console.error("Unable to create table : ", error);
   });
 }
 

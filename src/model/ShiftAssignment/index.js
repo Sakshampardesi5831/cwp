@@ -35,7 +35,7 @@ const ShiftAreaAssignment = sequelize.define(
 
 if(process.env.SYNC_SEQ){
   sequelize.sync().then(() => {
-      console.log('Area -> table created successfully!');
+      console.log('ShiftAssignment -> table created successfully!');
   }).catch((error) => {
       console.error('Unable to create table : ', error);
   });

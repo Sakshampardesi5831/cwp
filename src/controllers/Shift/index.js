@@ -6,8 +6,8 @@ export async function saveShift(request,response,next){
         const shift =await Shift.create({
             ShiftName,
             Description,
-            StartTime: new Date(StartTime).toISOString(), // Convert to ISO 8601 string
-            EndTime: new Date(EndTime).toISOString()   
+            StartTime: new Date().toISOString(),
+            EndTime: new Date().toISOString()  
         })
         return success(request,response,shift);
     } catch (error) {

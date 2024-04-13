@@ -27,10 +27,10 @@ const Line = sequelize.define(
       type: DataTypes.STRING(200),
     },
     CreationDate: {
-      type: DataTypes.DATE,
+      type:'DATETIME',
     },
     UpdateDate: {
-      type: DataTypes.DATE,
+      type:'DATETIME',
     },
   },
   {
@@ -40,7 +40,7 @@ const Line = sequelize.define(
 
 if(process.env.SYNC_SEQ){
   sequelize.sync().then(() => {
-      console.log('Area -> table created successfully!');
+      console.log('Lines -> table created successfully!');
   }).catch((error) => {
       console.error('Unable to create table : ', error);
   });

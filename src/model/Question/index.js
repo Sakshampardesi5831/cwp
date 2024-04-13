@@ -27,7 +27,7 @@ const Question = sequelize.define("Question", {
 
 if(process.env.SYNC_SEQ){
     sequelize.sync().then(() => {
-        console.log('Area -> table created successfully!');
+        console.log('Questions -> table created successfully!');
     }).catch((error) => {
         console.error('Unable to create table : ', error);
     });

@@ -18,12 +18,12 @@ const Defect = sequelize.define("Defect", {
         allowNull: true,
     }
 }, {
-    timestamps: false // To disable Sequelize's default timestamps
+    timestamps: false 
 });
 
 if(process.env.SYNC_SEQ){
     sequelize.sync().then(() => {
-        console.log('Area -> table created successfully!');
+        console.log('Defect -> table created successfully!');
     }).catch((error) => {
         console.error('Unable to create table : ', error);
     });
