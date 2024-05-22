@@ -22,7 +22,7 @@ export const SaveUser = (request, response, next) => {
     );
   }
 };
-export const getProcessors = async (request, response, next) => {
+export const  getProcessors = async (request, response, next) => {
   const { plantName, role } = request.query;
   try {
     const result = await Plant.findAll({

@@ -26,9 +26,6 @@ const Line = sequelize.define(
     Description: {
       type: DataTypes.STRING(200),
     },
-    CreationDate: {
-      type:'DATETIME',
-    },
     UpdateDate: {
       type:'DATETIME',
     },

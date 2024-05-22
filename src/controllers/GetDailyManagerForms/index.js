@@ -6,84 +6,102 @@ import {
 import db from "../../config/db";
 import Plant from "../../model/Plant";
 import Area from "../../model/Area";
-import Lines from "../../model/Line";
+import Line from "../../model/Line";
 import Form from "../../model/Form";
 import Equipment from "../../model/Equipment";
 import Plants from "../../model/Plant";
+import FormEqiupment from "../../model/Form_Equipment";
+import { HasMany, HasOne, Sequelize } from "sequelize";
 export const getDailyManagerForms = async (request, response, next) => {
-  const { plant, shift, areas, lines, equipments, date } = request.query;
+  const { plant, shift, areas, lines, equipments } = request.body;
+  console.log({ plant, shift, areas, lines, equipments });
+  // const paramsLines = lines
   try {
-   return  success(request, response, "success")
+    const result = await FormEqiupment.findAll({
+      include: [
+        {
+          model: Area,
+          as: "Area",
+          association: new HasOne(FormEqiupment, Area, {
+            sourceKey: "AreaId",
+            foreignKey: "AreaID",
+            constraints: false,
+          }),
+          required: true,
+        },
+        {
+          model: Form,
+          as: "Form",
+          association: new HasOne(FormEqiupment, Form, {
+            sourceKey: "FormId",
+            foreignKey: "FormID",
+            constraints: false,
+          }),
+          required: true,
+        },
+        {
+          model: Line,
+          as: "Line",
+          association: new HasOne(FormEqiupment, Line, {
+            sourceKey: "LineId",
+            foreignKey: "LineID",
+            constraints: false,
+          }),
+          required: true,
+        },
+        {
+          model: Equipment,
+          as: "Equipment",
+          association: new HasOne(FormEqiupment, Equipment, {
+            sourceKey: "EquipmentId",
+            foreignKey: "EquipmentID",
+            constraints: false,
+          }),
+          required: true,
+        },
+      ],
+
+      where: {
+        PlantId: plant,
+        ShiftId: shift,
+        AreaId: areas,
+        LineId: lines,
+        EquipmentId: equipments,
+      },
+    });
+
+    const transformedData = {};
+
+    result.forEach((item) => {
+      if (!transformedData[item.FormId]) {
+        transformedData[item.FormId] = {
+          id: item.FormId,
+          name: item.Form.FormName,
+          description: item.Form.Description,
+          // date: new Date().toISOString().split('T')[0],
+          plant: "Garland",
+          shift: "Shift 1",
+          areas: [],
+          lines: [],
+          equipments: [],
+        };
+      }
+
+      transformedData[item.FormId].areas.push(item.Area);
+      transformedData[item.FormId].lines.push(item.Line);
+      transformedData[item.FormId].equipments.push(item.Equipment);
+    });
+    const transformedArray = Object.values(transformedData);
+
+    return success(request, response, transformedArray);
   } catch (error) {
-      return internalServerError(request,response,error.message,"Internal Server error");
+    return internalServerError(
+      request,
+      response,
+      error.message,
+      "Internal Server error"
+    );
   }
-
-  // const project = await Plant.findOne({ where: { PlantName: plant } });
-  // console.log(project.PlantID);
-  // const allForm = await Form.findAll({});
-  // console.log(allForm);
-  // const formId = allForm[0].FormID;
-  // const formName = allForm[0].FormName;
-  // const formDescription = allForm[0].Description;
-  // try {
-  //   const sql = `
-  //   SELECT DISTINCT
-  //     A.AreaID,
-  //     A.AreaName,
-  //     A.Description AS AreaDescription,
-  //     L.LineID,
-  //     L.LineName,
-  //     L.Description AS LineDescription,
-  //     E.EquipmentID,
-  //     E.EquipmentName,
-  //     E.Description AS EquipmentDescription
-  //   FROM
-  //     Plants p
-  //   INNER JOIN
-  //     Areas A ON p.PlantID = A.PlantID
-  //   INNER JOIN
-  //     [Lines] L ON L.AreaID IN (${areas.map((id) => `'${id}'`).join(",")})
-  //   INNER JOIN
-  //     Equipment E ON E.LineID IN (${lines.map((id) => `'${id}'`).join(",")})
-  //   WHERE
-  //     p.PlantID ='${project.PlantID}';
-  // `;
-  //   const processors = await db.query(sql, { type: db.QueryTypes.SELECT });
-  //   let areaNames = [];
-  //   let lineNames = [];
-  //   let equipmentNames = [];
-
-    
-  //   areaNames = [];
-  //   lineNames = [];
-  //   equipmentNames = [];
-  //   processors.map((item, index) => {
-  //     areaNames.push(item.AreaName);
-  //     lineNames.push(item.LineName);
-  //     equipmentNames.push(item.EquipmentName);
-  //   });
-  //   const transformedData = allForm.map((item, index) => ({
-  //     id: item.FormID,
-  //     name: item.FormName,
-  //     description: item.Description,
-  //     date: date,
-  //     plant: plant,
-  //     shift: shift,
-  //     areas: areaNames,
-  //     lines: lineNames,
-  //     equipments: equipmentNames,
-  //   }));
-
-  //   return success(request, response, transformedData);
-  // } catch (error) {
-  //   return internalServerError(
-  //     request,
-  //     response,
-  //     error.message,
-  //     "Internal server error"
-  //   );
-  // }
-  
 };
 export const getDailyManagerForms2 = async (request, response, next) => {
   const { plant, shift, areas, lines, equipments, date } = request.query;
@@ -137,7 +155,6 @@ export const getDailyManagerForms2 = async (request, response, next) => {
   //   );
   // }
   try {
-    
   } catch (error) {
     console.error("Error fetching distinct data:", error);
     throw error;
